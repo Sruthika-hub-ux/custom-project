@@ -59,6 +59,65 @@ The function expects num1 and num2 to be part of the event payload.
 Add proper IAM roles if this Lambda function needs to interact with other AWS services.
 
 
+### LAMBDA FUNCTION TO STORE A DOCUMENT OR PDF IN S3 BUCKET
+
+1.Steps to Set Up
+Create the S3 Bucket:
+
+Go to the AWS S3 console.
+Create a new bucket (e.g., my-pdf-storage).
+Note the bucket name for use in the Lambda function's environment variables.
+Set Up the Lambda Function:
+
+2.In the AWS Lambda console, create a new function.
+Use Python 3.x as the runtime.
+Copy and paste the code into the editor.
+Set Environment Variables:
+
+3.Under the "Configuration" tab, add an environment variable:
+Key: S3_BUCKET_NAME
+Value: The name of your S3 bucket (e.g., my-pdf-storage).
+Attach Permissions:
+
+4.Attach the AmazonS3FullAccess policy to the Lambda execution role or create a custom policy with permissions to put objects into the specific bucket:
+json
+Copy code
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::my-pdf-storage/*"
+    }
+  ]
+}
+
+
+5.Test the Function:
+
+Create a test event in the Lambda console:
+json
+Copy code
+{
+  "body": "{\"file_content\": \"<base64_encoded_content>\", \"file_name\": \"example.pdf\"}"
+}
+
+
+6.Replace <base64_encoded_content> with the base64-encoded representation of a sample PDF file.
+Run the test and verify that the file is uploaded to the specified S3 bucket.
+Deploy with API Gateway (Optional):
+
+NOTE:
+Create an API Gateway to expose the Lambda function as an HTTP endpoint.
+Use a POST method to send the file and its metadata.
+Example cURL Command to Test with API Gateway
+bash
+Copy code
+curl -X POST https://<API_GATEWAY_ENDPOINT> \
+-H "Content-Type: application/json" \
+-d '{"file_content": "<base64_encoded_content>", "file_name": "example.pdf"}'
+Replace <API_GATEWAY_ENDPOINT> and <base64_encoded_content> as necessary.
 
 ## Compatibility
 Tested on modern browsers like Chrome, Firefox, and Edge.
