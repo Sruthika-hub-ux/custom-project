@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel BRUTT</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+    
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-image: url('C:\Users\Admin\Downloads\pexels-pixabay-460537.jpg');
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            z-index: 1000;
+        }
+        .content {
+            display: flex;
+            flex: 1;
+            margin-top: 4rem; /* Offset for fixed navbar */
+        }
+        .left-menu {
+            width: 20%;
+            background-color: #f4f4f4;
+            padding: 1rem;
+            transition: transform 0.3s ease-in-out;
+        }
+        .left-menu.collapsed {
+            transform: translateX(-100%);
+        }
+        .main-content {
+            flex: 1;
+            padding: 1rem;
+        }
+        .right-panel {
+            width: 20%;
+            background-color: #f9f9f9;
+            padding: 1rem;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        @media (max-width: 768px) {
+            .left-menu {
+                position: absolute;
+                z-index: 999;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+            .left-menu.open {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <button id="toggle-menu">☰</button> HOTEL BRUTT
+    </div>
+    <div class="content">
+        <div class="left-menu" id="left-menu">
+            <ul>
+                <li>BREAKFAST</li>
+                <li>LUNCH</li>
+                <li>DINNER</li>
+                <li>BEVERAGES</li>
+                <li>SNACKS</li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <h1>Welcome to Our Hotel!</h1>
+            <p>Select your favorite dishes from the menu and enjoy your meal!</p>
+            
+
+        </div>
+        <div class="right-panel">
+            <h3>Special Offers</h3>
+            <p>Get 20% off on orders above Rs.500</p>
+        </div>
+    </div>
+    <div class="footer">
+        &copy; 2025 Hotel Food BRUTT.
+    </div>
+    <script src="script.js"></script>
+    <script>
+        const toggleMenuButton = document.getElementById('toggle-menu');
+        const leftMenu = document.getElementById('left-menu');
+
+        toggleMenuButton.addEventListener('click', () => {
+            leftMenu.classList.toggle('open');
+        });
+
+        function adjustLayout() {
+            const width = window.innerWidth;
+
+            if (width <= 600) {
+                document.body.style.transform = 'scale(0.5)';
+            } else if (width <= 700) {
+                document.body.style.transform = 'scale(0.75)';
+            } else if (width <= 767) {
+                document.body.style.transform = 'scale(0.8)';
+            } else if (width <= 1600) {
+                document.body.style.transform = 'scale(0.9)';
+            } else {
+                document.body.style.transform = 'scale(1)';
+            }
+        }
+
+        window.addEventListener('resize', adjustLayout);
+        adjustLayout();
+    </script>
+</body>
+</html>
