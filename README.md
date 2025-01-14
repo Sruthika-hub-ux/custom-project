@@ -13,11 +13,6 @@ This project is a responsive webpage for ordering food at a hotel. It includes a
 4. **Dynamic Scaling**:
    - Shrinks the page width dynamically based on screen size.
 
-## File Structure
-- `index.html`: HTML structure.
-- `styles.css`: Styles for layout and responsiveness.
-- `script.js`: JavaScript for interactivity and scaling.
-- `README.md`: Documentation for the project.
 
 ## Instructions
 1. Clone or download the repository.
