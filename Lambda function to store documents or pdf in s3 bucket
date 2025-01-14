@@ -1,0 +1,62 @@
+import base64
+import boto3
+import json
+import os
+
+# Initialize the S3 client
+s3 = boto3.client('s3')
+
+def lambda_handler(event, context):
+    """
+    Lambda function to upload a document or PDF to an S3 bucket.
+    
+    Args:
+    event (dict): Input event containing the base64-encoded file and metadata.
+    context (object): Lambda runtime methods and attributes.
+    
+    Returns:
+    dict: Response indicating success or failure.
+    """
+    try:
+        # Retrieve environment variable for bucket name
+        bucket_name = os.getenv("S3_BUCKET_NAME")
+        if not bucket_name:
+            raise ValueError("Environment variable 'S3_BUCKET_NAME' not set.")
+
+        # Parse input from the event
+        body = json.loads(event.get("body", "{}"))
+        file_content = body.get("file_content")  # Base64-encoded file content
+        file_name = body.get("file_name")  # File name (e.g., "document.pdf")
+
+        # Validate input
+        if not file_content or not file_name:
+            raise ValueError("Both 'file_content' and 'file_name' must be provided.")
+
+        # Decode the base64 file content
+        file_data = base64.b64decode(file_content)
+
+        # Upload the file to S3
+        s3.put_object(
+            Bucket=bucket_name,
+            Key=file_name,
+            Body=file_data,
+            ContentType="application/pdf" if file_name.endswith(".pdf") else "application/octet-stream"
+        )
+
+        return {
+            "statusCode": 200,
+            "body": json.dumps({
+                "message": "File uploaded successfully",
+                "file_name": file_name
+            })
+        }
+
+    except Exception as e:
+        # Handle errors
+        return {
+            "statusCode": 400,
+            "body": json.dumps({
+                "message": "File upload failed",
+                "error": str(e)
+            })
+        }
