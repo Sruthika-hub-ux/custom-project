@@ -20,11 +20,6 @@ This project is a responsive webpage for ordering food at a hotel. It includes a
 3. Resize the browser window to see responsive behavior and dynamic scaling.
 4. Use the "Toggle Menu" button to collapse or expand the left menu.
 
-## Compatibility
-Tested on modern browsers like Chrome, Firefox, and Edge.
-
-## Author
-Developed by [sruthika T].
 
 ### CREATE AWS LAMBDA FOR ADDING TWO NUMBERS
 1.Set Up AWS CLI or Console:
@@ -44,6 +39,9 @@ json output:
   "num1": 10,
   "num2": 20
 }
+
+
+
 3.Run the test, and you should receive the result:
 json
 Copy code
@@ -51,6 +49,8 @@ Copy code
   "statusCode": 200,
   "body": "{\"message\": \"Addition successful\", \"result\": 30}"
 }
+
+
 4.Trigger the Lambda Function:
 
 Use the AWS Management Console, API Gateway, or CLI to invoke the function with the required inputs.
@@ -60,4 +60,9 @@ Add proper IAM roles if this Lambda function needs to interact with other AWS se
 
 
 
+## Compatibility
+Tested on modern browsers like Chrome, Firefox, and Edge.
+
+## Author
+Developed by [sruthika T].
 
