@@ -27,7 +27,7 @@ Tested on modern browsers like Chrome, Firefox, and Edge.
 Developed by [sruthika T].
 
 ### CREATE AWS LAMBDA FOR ADDING TWO NUMBERS
-Set Up AWS CLI or Console:
+1.Set Up AWS CLI or Console:
 
 Log in to your AWS account and go to the Lambda service.
 Click "Create Function" and select "Author from scratch".
@@ -38,7 +38,7 @@ Copy and paste the code into the Lambda function editor under the "Code" tab.
 Click "Deploy" to save the changes.
 Test the Function:
 
-Create a test event with the following structure:
+2.Create a test event with the following structure:
 json output:
 {
   "num1": 10,
