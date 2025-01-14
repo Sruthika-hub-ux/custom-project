@@ -119,6 +119,47 @@ curl -X POST https://<API_GATEWAY_ENDPOINT> \
 -d '{"file_content": "<base64_encoded_content>", "file_name": "example.pdf"}'
 Replace <API_GATEWAY_ENDPOINT> and <base64_encoded_content> as necessary.
 
+
+## CHAT APPLICATION
+1.Frontend: React.js (for dynamic UI) and Tailwind CSS (for styling).
+Backend: Node.js (Express) for REST APIs and WebSocket server.
+Database: MongoDB (to store users and messages).
+Authentication: JSON Web Tokens (JWT).
+WebSocket Library: socket.io.
+
+
+2. Application Features
+User Sign-Up/Login:
+
+Users can register with their email and password.
+Login authenticates users and provides a JWT.
+Display Registered Users:
+
+3.Collapsible left menu listing all registered users.
+Indicates online/offline status in real-time using WebSockets.
+Chat Functionality:
+
+4.Logged-in users can select another user to initiate a chat.
+Messages between users are stored in the database and displayed in the chat interface.
+Retrieve and display old chat messages when a user opens a chat.
+WebSocket Integration:
+
+5.Use WebSocket for real-time messaging.
+User-Friendly Chat Interface:
+
+Responsive UI with chat bubbles, timestamps, and user avatars.
+Scrollable chat history.
+
+##Deploy
+**Backend:
+
+Use AWS EC2 or Heroku for deployment.
+Set up MongoDB Atlas for a cloud database.
+
+**Frontend:
+
+Deploy using Netlify or Vercel.
+
 ## Compatibility
 Tested on modern browsers like Chrome, Firefox, and Edge.
 
