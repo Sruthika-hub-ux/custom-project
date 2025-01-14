@@ -1,0 +1,35 @@
+import json
+
+def lambda_handler(event, context):
+    
+    try:
+        # Retrieve numbers from the event
+        num1 = event.get('num1')
+        num2 = event.get('num2')
+        
+        # Validate input
+        if num1 is None or num2 is None:
+            raise ValueError("Both 'num1' and 'num2' must be provided in the event.")
+        
+        if not isinstance(num1, (int, float)) or not isinstance(num2, (int, float)):
+            raise TypeError("Both 'num1' and 'num2' must be numbers.")
+        
+      
+        result = num1 + num2
+        
+      
+        return {
+            "statusCode": 200,
+            "body": json.dumps({
+                "message": "Addition successful",
+                "result": result
+            })
+        }
+    except Exception as e:
+        return {
+            "statusCode": 400,
+            "body": json.dumps({
+                "message": "Error",
+                "error": str(e)
+            })
+        }
