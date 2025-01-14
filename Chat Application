@@ -1,0 +1,116 @@
+## database schema
+
+{
+  "_id": "ObjectId",
+  "email": "string",
+  "password": "hashed_string",
+  "name": "string",
+  "status": "online/offline",
+  "created_at": "Date"
+}
+
+## message collection
+
+{
+  "_id": "ObjectId",
+  "sender_id": "ObjectId",
+  "receiver_id": "ObjectId",
+  "message": "string",
+  "timestamp": "Date"
+}
+ ##Implement
+    ## Backend(nodejs+express+socket.io)
+
+       npm install express mongoose bcrypt jsonwebtoken socket.io cors
+
+## Server.js
+      const express = require("express");
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { Server } = require("socket.io");
+const http = require("http");
+const cors = require("cors");
+
+// App Setup
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: "*" } });
+const PORT = 5000;
+
+// MongoDB Connection
+mongoose.connect("mongodb://localhost/chat-app", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+const User = require("./models/User");
+const Message = require("./models/Message");
+
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.post("/signup", async (req, res) => {
+  const { email, password, name } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = new User({ email, password: hashedPassword, name });
+  await user.save();
+  res.json({ message: "User registered successfully" });
+});
+
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(400).json({ error: "Invalid credentials" });
+  }
+  const token = jwt.sign({ id: user._id }, "secret", { expiresIn: "1d" });
+  res.json({ token, user: { id: user._id, name: user.name } });
+});
+
+app.get("/users", async (req, res) => {
+  const users = await User.find().select("name email status");
+  res.json(users);
+});
+
+app.get("/messages/:receiverId", async (req, res) => {
+  const { receiverId } = req.params;
+  const messages = await Message.find({
+    $or: [
+      { sender_id: req.user.id, receiver_id: receiverId },
+      { sender_id: receiverId, receiver_id: req.user.id },
+    ],
+  }).sort("timestamp");
+  res.json(messages);
+});
+
+// WebSocket Logic
+io.on("connection", (socket) => {
+  console.log("A user connected");
+  socket.on("send-message", async ({ sender_id, receiver_id, message }) => {
+    const newMessage = new Message({ sender_id, receiver_id, message, timestamp: new Date() });
+    await newMessage.save();
+    io.emit("receive-message", newMessage);
+  });
+});
+
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+##Frontend(TailwindCSS+React)
+
+npx create-react-app chat-app
+cd chat-app
+npm install axios socket.io-client
+
+##Websocket integration
+
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5000");
+
+##ChatUpdate listener
+
+socket.on("receive-message", (message) => {
+  setMessages((prevMessages) => [...prevMessages, message]);
+});
+
+
